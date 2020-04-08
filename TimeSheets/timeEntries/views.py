@@ -1,8 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.http import Http404
 from django.views.generic.dates import WeekArchiveView
-from datetime import date
-from django.views.generic.base import RedirectView
+from time import strftime
 
 from .models import TimeEntry
 
@@ -15,16 +14,11 @@ class TimeEntriesWeekView(WeekArchiveView):
     allow_future = False
     allow_empty = True
 
-class TimeEntriesRedirectView(RedirectView):
-
-    permanent = True
-    query_string = True
-    pattern_name = 'timeEntries:view-specific-week'
-
-    def get_redirect_url(self, *args, **kwargs):
-        kwargs['week'] = date.today().isocalendar()[1]
-        kwargs['year'] = date.today().year
-        return super().get_redirect_url(*args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(context['week'])
+        context['week'] = context['week']
+        return context
 
 def new(request):
     return render(request, 'timeEntries/new.html')
