@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="text-center mb-3">Time Entries : {%if week %}{{ week|date:'W' }}{% endif %}</h1>
+    <div class="list-group">
+        {% for entry in object_list  %}
+            <a href="#" class="list-group-item list-group-item-action {{ entry.end_time|yesno:",list-group-item-danger" }}">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{entry.start_time|date:"d/m P"}} </h5>
+                    <small>{{entry.logged_time}}</small>
+                </div>
+                <p class="mb-1">{{entry.description}}</p>
+                <small>{{entry.client}}</small>
+            </a>
+        {% empty %}
+            <a href="#" class="list-group-item list-group-item-action list-group-item-danger">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">NO ENTRIES HERE.</h5>
+                </div>
+                <p class="mb-1">Click to add one.</p>
+            </a>
+        {% endfor %}
+    </div>
+    <p>
+        {% if previous_week %}
+            <a href="{% url 'timeEntries:view-specific-week' previous_week|date:'Y' previous_week|date:'W' %}">Previous Week[{{ previous_week|date:"W" }}]</a>
+        {% endif %}
+        {% if previous_week and next_week %}--{% endif %}
+        {% if next_week %}
+        <a href="{% url 'timeEntries:view-specific-week' next_week|date:'Y' next_week|date:'W' %}">Next Week[{{ next_week|date:"W" }}]</a>
+        {% endif %}
+    </p>
+
+{% endblock %}

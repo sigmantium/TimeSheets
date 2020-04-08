@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="text-center mb-3">Time Entry: {{entry.pk}}</h1>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h2>{{entry.start_time}} -> {{entry.end_time}}</h2>
+                <p>{{entry.description}}</p>
+            </div>
+        </div>
+
+{% endblock %}
