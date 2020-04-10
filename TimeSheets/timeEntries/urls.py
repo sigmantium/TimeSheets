@@ -1,5 +1,6 @@
 from django.urls import path
 from timeEntries.views import TimeEntriesWeekView
+from datetime import datetime
 from time import strftime
 
 from . import views
@@ -7,9 +8,7 @@ from . import views
 app_name = 'timeEntries'
 
 urlpatterns = [
-     path('',
-         TimeEntriesWeekView.as_view(year=strftime('%Y'),week=strftime('%W')),
-         name="view-current-week"),
+     path('', views.listredirect, name="view-current-week"),
      path('<int:year>/<int:week>/',
           TimeEntriesWeekView.as_view(),
           name="view-specific-week"),

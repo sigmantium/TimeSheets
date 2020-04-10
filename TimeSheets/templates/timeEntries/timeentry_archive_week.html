@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="text-center mb-3">Time Entries : {%if week %}{{ week|date:'W' }} -- {{week}} {% endif %}</h1>
+<h1 class="text-center mb-3">Time Entries Starting : {{ week }}</h1>
     <div class="list-group">
         {% for entry in object_list  %}
             <a href="#" class="list-group-item list-group-item-action {{ entry.end_time|yesno:",list-group-item-danger" }}">
@@ -23,11 +23,11 @@
     </div>
     <p>
         {% if previous_week %}
-            <a href="{% url 'timeEntries:view-specific-week' previous_week|date:'Y' previous_week|date:'W' %}">Previous Week[{{ previous_week|date:"W" }}]</a>
+            <a href="{% url 'timeEntries:view-specific-week' previous_week|date:'Y' lastweek %}">Previous Week[{{ lastweek }}]</a>
         {% endif %}
         {% if previous_week and next_week %}--{% endif %}
         {% if next_week %}
-        <a href="{% url 'timeEntries:view-specific-week' next_week|date:'Y' next_week|date:'W' %}">Next Week[{{ next_week|date:"W" }}]</a>
+        <a href="{% url 'timeEntries:view-specific-week' next_week|date:'Y' nextweek %}">Next Week[{{ nextweek }}]</a>
         {% endif %}
     </p>
 
