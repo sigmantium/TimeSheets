@@ -13,12 +13,12 @@ class EntryCode(models.Model):
 
 class TimeEntry(models.Model):
     start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-    description = models.TextField()
+    end_time = models.DateTimeField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     billable = models.BooleanField(default=True)
-    client = models.ForeignKey(Client, on_delete=models.DO_NOTHING)
+    client = models.ForeignKey(Client, on_delete=models.DO_NOTHING, null=True, blank=True)
     owner = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    code = models.ForeignKey(EntryCode, on_delete=models.DO_NOTHING)
+    code = models.ForeignKey(EntryCode, on_delete=models.DO_NOTHING, null=True, blank=True)
 
     def open(self):
         if not self.end_time:

@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% if has_entry_open %}
+        <h1 class="text-center mb-3">CLOSE OFF YOUR PREVIOUS WORK FIRST!</h1>
+    {% endif %}   
     <h1 class="text-center mb-3">Time Entries: {{ week|date: 'W' }}</h1>
     <div class="list-group">
         {% for entry in object_list  %}

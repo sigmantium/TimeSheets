@@ -28,7 +28,7 @@ class TimeEntriesWeekView(WeekArchiveView):
         context.update({
             'thisweek' : week,
             'nextweek' : nextweek,
-            'lastweek' : lastweek
+            'lastweek' : lastweek,
         })
         return context
 
