@@ -47,6 +47,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'login_required.middleware.LoginRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -123,4 +124,16 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
+]
+
+LOGIN_REQUIRED_IGNORE_PATHS = [
+    '/accounts/logout/$'
+    '/admin/$',
+    '/admin/login/$',
+]
+
+LOGIN_REQUIRED_IGNORE_VIEW_NAMES = [
+    'login',
+    'admin:index',
+    'admin:login',
 ]
