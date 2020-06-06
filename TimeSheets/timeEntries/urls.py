@@ -13,6 +13,7 @@ urlpatterns = [
           TimeEntriesWeekView.as_view(),
           name="view-specific-week"),
     path('<int:entry_id>', views.view, name='view'),
-    path('<int:entry_id>/edit', views.view, name='view'),
+    path('<int:entry_id>/edit', views.view, name='edit'),
     path('new', views.new, name='new'),
+    path('quickCreate', views.quickCreate, name="quick-create")
 ]

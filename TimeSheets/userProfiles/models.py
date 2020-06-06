@@ -9,7 +9,7 @@ class Profile(models.Model):
 
 
     def has_active_time_entry(self):
-        return True if TimeEntry.objects.exclude(end_time__isnull=False).filter(owner = self.user) else False
+        return TimeEntry.objects.exclude(end_time__isnull=False).filter(owner = self.user)[:1]
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -18,4 +18,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    try:
+        instance.profile.save()
+    except:
+        Profile.objects.create(user=instance)
