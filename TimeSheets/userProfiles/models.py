@@ -9,8 +9,7 @@ class Profile(models.Model):
 
 
     def has_active_time_entry(self):
-        return TimeEntry.objects.exclude(end_time__isnull=False).filter(owner = self.user)[:1]
-
+        return TimeEntry.objects.exclude(end_time__isnull=False).filter(owner = self.user).first()
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:

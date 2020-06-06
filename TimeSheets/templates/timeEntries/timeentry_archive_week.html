@@ -3,18 +3,18 @@
 {% block content %} 
 <h1 class="text-center mb-3">Time Entries Starting : {{ week }}</h1>
     <div class="d-flex w-100 justify-content-between">
-        <a name="" id="" class="btn btn-primary" href="{% url 'timeEntries:new' %}" role="button">Quick Create</a>
+        <a name="" id="" class="btn btn-primary" href="{% url 'timeEntries:quick-create' %}" role="button">Quick Create</a>
         {% if request.user.profile.has_active_time_entry %}
-            <a name="" id="" class="btn btn-error" href="{% url 'timeEntries:new' %}" role="button">Quick Finish</a>
+            <a name="" id="" class="btn btn-danger" href="{% url 'timeEntries:quick-finish' entry_id=request.user.profile.has_active_time_entry %}" role="button">Quick Finish</a>
         {% endif %}
         <a name="" id="" class="btn btn-primary" href="{% url 'timeEntries:new' %}" role="button">Full Create</a>
     </div>
     <div class="list-group">
         {% for entry in object_list  %}
-            <a href="#" class="list-group-item list-group-item-action {{ entry.end_time|yesno:",list-group-item-danger" }}">
+            <a href="{% url 'timeEntries:view' entry.id %}" class="list-group-item list-group-item-action {{ entry.end_time|yesno:",list-group-item-danger" }}">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{entry.start_time|date:"d/m P"}} </h5>
-                    <small>{{entry.logged_time}}</small>
+                    <small>{{ entry.logged_time }}</small>
                 </div>
                 <p class="mb-1">{{entry.description}}</p>
                 <small>{{entry.client}}</small>

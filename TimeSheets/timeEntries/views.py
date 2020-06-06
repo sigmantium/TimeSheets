@@ -33,7 +33,11 @@ class TimeEntriesWeekView(WeekArchiveView):
         return context
 
 def new(request):
-    return render(request, 'timeEntries/new.html')
+    entry = TimeEntry.objects.create(
+        owner = request.user,
+        start_time = datetime.now()
+    )
+    return redirect('timeEntries:edit', entry_id=entry )
 
 def view(request, entry_id):
     try:
@@ -46,11 +50,12 @@ def listredirect(request):
     return redirect('timeEntries:view-specific-week', week=datetime.now().strftime('%W'), year=datetime.now().strftime('%Y'))
 
 def quickCreate(request):
-    entry = TimeEntry.create(
+
+    entry = TimeEntry.objects.create(
         owner = request.user,
         start_time = datetime.now()
     )
-    return redirect('timeEntries:edit', {'entry':entry} )
+    return redirect('timeEntries:view-specific-week', week=datetime.now().strftime('%W'), year=datetime.now().strftime('%Y'))
 
 def edit(request, entry_id):
     try:
@@ -58,3 +63,11 @@ def edit(request, entry_id):
     except TimeEntry.DoesNotExist:
         raise Http404("Time Entry does not exist")
     return render(request, 'timeEntries/edit.html', {'entry':entry})
+
+def quickFinish(request, entry_id):
+    
+    entry = TimeEntry.objects.get(pk=entry_id)
+    print("entry: "+ str(entry))
+    entry.end_time = datetime.now()
+    entry.save()
+    return redirect('timeEntries:view-specific-week', week=datetime.now().strftime('%W'), year=datetime.now().strftime('%Y'))
