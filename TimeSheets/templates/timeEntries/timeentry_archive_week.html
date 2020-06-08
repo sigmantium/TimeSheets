@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
-
 {% block content %} 
-<h1 class="text-center mb-3">Time Entries Starting : {{ week }}</h1>
+<h2 class="text-center mb-3">Time Entries Starting : {{ week }}</h2>
     <div class="d-flex w-100 justify-content-between">
         <a name="" id="" class="btn btn-primary" href="{% url 'timeEntries:quick-create' %}" role="button">Quick Create</a>
         {% if request.user.profile.has_active_time_entry %}
@@ -12,21 +11,34 @@
     <div class="list-group">
         {% for entry in object_list  %}
             <a href="{% url 'timeEntries:view' entry.id %}" class="list-group-item list-group-item-action {{ entry.end_time|yesno:",list-group-item-danger" }}">
+                <div class="d-flex w-100 justify-content-end">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <object><a class="btn btn-primary btn-sm" href="{% url 'timeEntries:edit' entry.id %}"><i class="fas fa-edit"></i></a></object>
+                        <object><button class="btn {{ entry.end_time|yesno:"btn-secondary,btn-success,btn-success"}} btn-sm" onclick="location.href='{% url 'timeEntries:quick-finish' entry_id=entry.id %}'" {{ entry.end_time|yesno:"disabled,,"}}><i class="far fa-check-circle"></i></button></object>
+                        <object><a class="btn btn-danger btn-sm"><i class="fas fa-ban"></i></a></object>
+                    </div>
+                </div>
+                
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{entry.start_time|date:"d/m P"}} </h5>
                     <small>{{ entry.logged_time }}</small>
                 </div>
-                <p class="mb-1">{{entry.description}}</p>
+                    <p class="mb-1">{{entry.description}}</p>
                 <small>{{entry.client}}</small>
             </a>
         {% empty %}
-            <a href="#" class="list-group-item list-group-item-action list-group-item-danger">
+            <a href="{% url 'timeEntries:new' %}" class="list-group-item list-group-item-action list-group-item-danger">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">NO ENTRIES HERE.</h5>
                 </div>
                 <p class="mb-1">Click to add one.</p>
             </a>
         {% endfor %}
+        <div class="list-group-item list-group-item-secondary" ">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Total Time: </h5>
+            </div>
+        </div>
     </div>
     <p>
         {% if previous_week %}

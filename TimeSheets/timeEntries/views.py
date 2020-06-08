@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404
 from django.views.generic.dates import WeekArchiveView
 from time import strftime
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from .models import TimeEntry
 
@@ -50,10 +50,12 @@ def listredirect(request):
     return redirect('timeEntries:view-specific-week', week=datetime.now().strftime('%W'), year=datetime.now().strftime('%Y'))
 
 def quickCreate(request):
-
+    
+    time = datetime.now() 
+    time = time - timedelta( minutes = time.minute % 1, seconds = time.second, microseconds = time.microsecond )
     entry = TimeEntry.objects.create(
         owner = request.user,
-        start_time = datetime.now()
+        start_time = time
     )
     return redirect('timeEntries:view-specific-week', week=datetime.now().strftime('%W'), year=datetime.now().strftime('%Y'))
 
@@ -67,7 +69,8 @@ def edit(request, entry_id):
 def quickFinish(request, entry_id):
     
     entry = TimeEntry.objects.get(pk=entry_id)
-    print("entry: "+ str(entry))
-    entry.end_time = datetime.now()
+    time = datetime.now() 
+    time = time - timedelta( minutes = time.minute % 1, seconds = time.second, microseconds = time.microsecond )
+    entry.end_time = time
     entry.save()
     return redirect('timeEntries:view-specific-week', week=datetime.now().strftime('%W'), year=datetime.now().strftime('%Y'))
