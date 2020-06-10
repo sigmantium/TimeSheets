@@ -1,21 +1,32 @@
-<form>
+<h1>{{ entry.start_time }}</h1>
+<form action="{% url 'timeEntries:edit' entry_id=entry.id %}" method="POST">
+  {% csrf_token %}
     <div class="form-group">
       <label for="startTimeInput">Start Time:</label>
-      <input class="form-control" id="startTimeInput" aria-describedby="startTimeHelp" placeholder="Enter Start Time" {% if entry.start_time %} value="{{ entry.start_time }}" {% endif %}>
+      <input name="start_time" class="form-control" id="startTimeInput" aria-describedby="startTimeHelp" placeholder="Enter Start Time" {% if entry.start_time  %} value="{{ entry.start_time|date:"Y-m-d H:m" }}" {% endif %}>
       <small id="startTimeHelp" class="form-text text-muted">Enter a Start Time.</small>
     </div>
     <div class="form-group">
       <label for="endTimeInput">End Time:</label>
-      <input class="form-control" id="endTimeInput" placeholder="Enter end time" {% if entry.end_time %} value="{{ entry.end_time }}" {% endif %}>
+      <input name="end_time" class="form-control" id="endTimeInput" placeholder="Enter end time" {% if entry.end_time %} value="{{ entry.end_time|date:"Y-m-d H:m" }}" {% endif %}>
     </div>
     <div class="form-group form-check">
-      <input type="checkbox" class="form-check-input" id="billableCheck" {% if entry.billable %} checked {% endif %}>
+      <input name="billable" type="checkbox" class="form-check-input" id="billableCheck" {% if entry.billable %} checked {% endif %}>
       <label class="form-check-label" for="billableCheck">Billable</label>
     </div>
     <div class="form-group">
       <label for="descriptionInput">Description:</label>
-      <input class="form-control" id="descriptionInput" aria-describedby="descriptionHelp" placeholder="Enter Description" {% if entry.description %} value="{{ entry.description }}" {% endif %}>
+      <input name="description" class="form-control" id="descriptionInput" aria-describedby="descriptionHelp" placeholder="Enter Description" {% if entry.description %} value="{{ entry.description }}" {% endif %}>
       <small id="descriptionHelp" class="form-text text-muted">Enter a description.</small>
+    </div>
+    <div class="form-group">
+      <label for="clientSelect">Client:</label>
+      <select class="form-control" id="clientSelect" name="client">
+        <option value="">None</option>
+        {% for client in clients %}
+        <option value="{{client.pk}}" {% if entry.client == client %} selected {% endif %}>{{client.name}}</option>
+        {% endfor %}
+      </select>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>

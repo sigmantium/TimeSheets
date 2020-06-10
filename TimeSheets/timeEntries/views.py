@@ -4,7 +4,7 @@ from django.views.generic.dates import WeekArchiveView
 from time import strftime
 from datetime import datetime, timedelta
 
-from .models import TimeEntry
+from .models import TimeEntry, Client
 
 # Create your views here.
 
@@ -64,7 +64,27 @@ def edit(request, entry_id):
         entry = TimeEntry.objects.get(pk=entry_id)
     except TimeEntry.DoesNotExist:
         raise Http404("Time Entry does not exist")
-    return render(request, 'timeEntries/edit.html', {'entry':entry})
+    if  request.method == 'POST':
+        entry.description = request.POST['description']
+        entry.start_time = request.POST['start_time']
+        entry.end_time = request.POST.get('end_time', None)
+        billable = False
+        if request.POST.get('billable', False) == 'on':
+            billable = True
+        entry.billable = billable
+        client_id = request.POST.get('client', None)
+        if( client_id ):
+            entry.client = Client.objects.get(pk=client_id)
+        else:
+            entry.client = None
+        entry.save()
+        return redirect( 'timeEntries:view', entry_id=entry)
+    context={
+        'entry':entry,
+        'clients': Client.objects.all()
+    }
+    
+    return render(request, 'timeEntries/edit.html', context)
 
 def quickFinish(request, entry_id):
     
