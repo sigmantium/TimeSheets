@@ -16,7 +16,7 @@
     </div>
     <div class="form-group">
       <label for="descriptionInput">Description:</label>
-      <input name="description" class="form-control" id="descriptionInput" aria-describedby="descriptionHelp" placeholder="Enter Description" {% if entry.description %} value="{{ entry.description }}" {% endif %}>
+      <textarea name="description" class="form-control" id="descriptionInput" aria-describedby="descriptionHelp" placeholder="Enter Description" rows="3" >{{ entry.description }}</textarea>
       <small id="descriptionHelp" class="form-text text-muted">Enter a description.</small>
     </div>
     <div class="form-group">

@@ -14,7 +14,7 @@
                 {% include 'forms/timeEntryManageBar.html' %}
                 
                 <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{entry.start_time|date:"d/m P"}} </h5>
+                    <h5 class="mb-1">{{entry.start_time|date:"D d/m P"}} </h5>
                     <small>{{ entry.logged_time }}</small>
                 </div>
                     <p class="mb-1">{{entry.description}}</p>
@@ -30,7 +30,7 @@
         {% endfor %}
         <div class="list-group-item list-group-item-secondary" ">
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">Total Time: </h5>
+                <h5 class="mb-1">Total Time: {{totalhours}}</h5>
             </div>
         </div>
     </div>

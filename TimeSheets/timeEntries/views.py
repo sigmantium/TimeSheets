@@ -3,6 +3,7 @@ from django.http import Http404
 from django.views.generic.dates import WeekArchiveView
 from time import strftime
 from datetime import datetime, timedelta
+from django.db.models import Sum,F,DurationField
 
 from .models import TimeEntry, Client
 
@@ -18,17 +19,22 @@ class TimeEntriesWeekView(WeekArchiveView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         week = int(context['week'].strftime('%W'))
+        year = int(context['week'].strftime('%Y'))
         nextweek = week+1
         lastweek = week-1
         if week == 52 :
             nextweek = 1
         if week == 1 :
             lastweek = 52
-
+        total_hours = TimeEntry.objects.filter(start_time__week=nextweek, end_time__isnull=False)
+        total_hours = total_hours.annotate( time_spent = F('end_time')-F('start_time'))
+        total_hours = total_hours.aggregate(Sum('time_spent', output_field=DurationField()))
+        total_hours = total_hours.get('time_spent__sum', 0.00)
         context.update({
             'thisweek' : week,
             'nextweek' : nextweek,
             'lastweek' : lastweek,
+            'totalhours' : total_hours,
         })
         return context
 
@@ -67,7 +73,10 @@ def edit(request, entry_id):
     if  request.method == 'POST':
         entry.description = request.POST['description']
         entry.start_time = request.POST['start_time']
-        entry.end_time = request.POST.get('end_time', None)
+        end_time = None
+        if request.POST.get('end_time', None):
+            end_time = request.POST['end_time']
+        entry.end_time = end_time
         billable = False
         if request.POST.get('billable', False) == 'on':
             billable = True
