@@ -1,0 +1,7 @@
+# my.cnf
+[client]
+database = timesheetsdb
+user = root
+password = 5AOq7ma8dbJrIdBm
+default-character-set = utf8
+use_pure = True

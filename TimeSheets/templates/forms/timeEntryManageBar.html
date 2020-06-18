@@ -1,0 +1,7 @@
+<div class="d-flex w-100 justify-content-end">
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <object><a class="btn btn-primary btn-sm" href="{% url 'timeEntries:edit' entry.id %}"><i class="fas fa-edit"></i></a></object>
+        <object><button class="btn {{ entry.end_time|yesno:"btn-secondary,btn-success,btn-success"}} btn-sm" onclick="location.href='{% url 'timeEntries:quick-finish' entry_id=entry.id %}'" {{ entry.end_time|yesno:"disabled,,"}}><i class="far fa-check-circle"></i></button></object>
+        <object><a class="btn btn-danger btn-sm"><i class="fas fa-ban"></i></a></object>
+    </div>
+</div>
