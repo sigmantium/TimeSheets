@@ -3,12 +3,12 @@
   {% csrf_token %}
     <div class="form-group">
       <label for="startTimeInput">Start Time:</label>
-      <input name="start_time" class="form-control" id="startTimeInput" aria-describedby="startTimeHelp" placeholder="Enter Start Time" {% if entry.start_time  %} value="{{ entry.start_time|date:"Y-m-d H:m" }}" {% endif %}>
+      <input name="start_time" class="form-control" id="startTimeInput" aria-describedby="startTimeHelp" placeholder="Enter Start Time" value="{{ entry.start_time|date:"Y-m-d H:i" }}">
       <small id="startTimeHelp" class="form-text text-muted">Enter a Start Time.</small>
     </div>
     <div class="form-group">
       <label for="endTimeInput">End Time:</label>
-      <input name="end_time" class="form-control" id="endTimeInput" placeholder="Enter end time" {% if entry.end_time %} value="{{ entry.end_time|date:"Y-m-d H:m" }}" {% endif %}>
+      <input name="end_time" class="form-control" id="endTimeInput" placeholder="Enter end time" {% if entry.end_time %} value="{{ entry.end_time|date:"Y-m-d H:i" }}" {% endif %}>
     </div>
     <div class="form-group form-check">
       <input name="billable" type="checkbox" class="form-check-input" id="billableCheck" {% if entry.billable %} checked {% endif %}>
